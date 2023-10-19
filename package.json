@@ -1,0 +1,20 @@
+{
+  "name": "bcs-dmcr-services-leccsync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "airtable": "^0.11.5",
+    "express": "^4.18.2",
+    "jade-bootstrap": "^1.0.14",
+    "node-cron": "^3.0.2",
+    "pug": "^3.0.2"
+  }
+}

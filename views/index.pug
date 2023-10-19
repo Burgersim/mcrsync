@@ -1,0 +1,47 @@
+extends ../node_modules/jade-bootstrap/layouts/bootswatch
+append styles
+    link(href=`../css/${mode}.css`, rel='stylesheet')
+block body
+    .container(style="text-align: center")
+        h1= title
+        p To start the Event Export/Import to MCR click the button below
+        //+alert-success('')
+        p(id='time')= ""
+        a(onclick='startExport()', id='button')
+            //+btn("Start Asset Import", "success", "lg")
+            if(mode === 'rbtv')
+                div(class='btn btn-danger btn-lg ld-ext-right running', id='importButton')= "Start Export"
+            if(mode === 'stv')
+                div(class='btn btn-danger btn-lg ld-ext-right running', id='importButton')= "Start Export"
+    script.
+        let mode = '#{mode}'
+        let syncInProgress = false;
+
+        async function startExport() {
+            syncInProgress = true;
+
+            document.getElementById('importButton').innerHTML = `Loading... <div class="ld ld-ring ld-spin""></div>`
+
+            await fetch('/request?mode=' + mode, {method: 'get', keepalive: true}).then(res =>res.json()).then(res => {
+
+                let time = res;
+
+                if(mode === 'rbtv')
+                    document.getElementById('time').innerHTML = `<div class="alert alert-success" role="alert" style="background-color: #f8f8f8; border-color: #b6b6b6; color: #1A1919 !important;">${time}</div>`
+                if(mode === 'stv')
+                    document.getElementById('time').innerHTML = `<div class="alert alert-success" role="alert"">${time}</div>`
+
+                document.getElementById('importButton').innerHTML = `Done`
+                document.getElementById('importButton').setAttribute('disabled', 'true')
+                document.getElementById('button').setAttribute('onclick', 'javascript: void(0)')
+
+
+
+                setTimeout(() => {
+                    document.getElementById('time').innerHTML = ` `
+                    document.getElementById('importButton').innerHTML = `Start Export`
+                    document.getElementById('button').setAttribute('onclick', 'startExport()')
+                    document.getElementById('importButton').removeAttribute('disabled')
+                }, 9000);
+            })
+        }
